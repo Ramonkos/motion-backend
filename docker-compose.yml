@@ -1,0 +1,28 @@
+version: '3'
+
+services:
+  app:
+    image: django-docker:latest
+    ports:
+      - 8000:8000
+    volumes:
+      - ./app:/app
+    tty: true
+    command: 'sh /scripts/dev.sh'
+#    command: 'tail -f /dev/null'
+    depends_on:
+      - postgres_db
+
+  postgres_db:
+    image: postgres:latest
+    environment:
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=postgres
+    volumes:
+      - postgres_db:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+
+volumes:
+  postgres_db:
